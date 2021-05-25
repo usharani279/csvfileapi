@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="febf681c-f4c3-4c1a-ae37-f7f333e03851" />
+	<flow name="csvfileapiFlow" doc:id="9bedb970-1eaf-402e-a748-8caea3205761" >
+		<file:listener doc:name="On New or Updated File" doc:id="b4a7c95c-4e88-4eaf-ad8a-9847fb1c2d87" config-ref="File_Config" directory="G:\data\Documents\xmls\usha">
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="93aaf331-5430-440e-bbba-c27fd9b39aae" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="3b3a3ecc-b2e1-492b-93cd-c65852622a1e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="76c0c10a-077b-4866-9ab0-fd04a26f2e1c" message="#[payload]"/>
+	</flow>
+</mule>
